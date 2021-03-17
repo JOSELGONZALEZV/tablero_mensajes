@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>board</title>
+
+  <link href="/public/css/bootstrap.min.css">
+  <script src="/public/js/jquery-3.5.1.min.js"></script>
+  <script src="/public/js/bootstrap.bundle.min.js"></script>
+  
+ 
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-10 offset-lg-4">
+        <h1>The Dojo Message Board</h1>
+        <div>
+          <form class="form1"  action="/" method="POST">
+            <H2>mensajes</H2>
+            <div class="mb-3">
+              <label class="form-label"></label>
+              <input type="text" placeholder="nombre"  required name="name1">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">mensaje:</label>
+              <input type="text" placeholder="mensaje" required name="message">
+            </div>
+            <button type="submit" class="btn btn-primary">enviar mensaje</button>
+          </form>
+          <div>
+              <% for (message of message_vws) { %>
+                <p><%=message.name1%></p>
+                <p><%=message.message%></p>
+              <% } %>
+            </button> <a href="/delete/<%=messageId %>"> eliminar mensajes</a>
+          </div>
+
+        </div>      
+      </div>
+    </div>
+    <div class="row">
+      <form class="form2" action="/" method="POST">
+        <h3>comentarios</h3>
+        <div class="mb-3">
+          <label class="form-label">nombre:</label>
+          <input type="hidden" name="menssageId" value="">
+          <input  type="text" name="name2" value="">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">comentario:</label>
+          <input type="text"  name="comment" value="">
+        </div>
+        <button type="submit" class="btn btn-primary">enviar comentario</button>
+      </form>
+        <div>
+          
+        </div>      
+    </div>      
+  </div>
+    
+  router.post('/comment', async (req,res) => {
+    const name2 = req.body.name2;
+    const comment = req.body.comment;
+    const messageId = req.body.messageId;
+    
+    if (name2 == '' || name2.length <= 2) {
+      return res.send('ERROR');
+      }
+    if (comment == '') {
+      return res.send('ERROR');
+      }
+    if (messageId == ''){
+      return res.send('error');
+    }
+    const message_vws = await Message_db.findByPk(req.body.message);
+    
+    await message_vws.createComment_db({
+      name2: req.body.name2,
+      comment: req.body.comment,
+      messageId: req.body.messageId
+    
+    });
+    console.log(message_vws);	
+    res.redirect('/');
+  });
+
+//----------peniente-----------//
+
+	const name2 = req.body.name2;
+    const comment = req.body.comment;
+    const messageId = req.body.messageId;
+    
+    if (name2 == '' || name2.length <= 2) {
+      return res.send('ERROR');
+      }
+    if (comment == '') {
+      return res.send('ERROR');
+      }
+    if (messageId == ''){
+      return res.send('error');
+    }
+    const message_vws = await Message_db.findByPk(req.body.message);
+    
+    await message_vws.createComment_db({
+      name2: req.body.name2,
+      comment: req.body.comment,
+      messageId: req.body.messageId
+    
+    });
+
+
+
+
+
+</body>
+
+</html>

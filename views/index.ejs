@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>board</title>
+
+  <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/public/css/estilo.css" >
+  <script src="/public/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-10 offset-lg-4">
+        <h1>The Dojo Message Board</h1>
+        <div>
+          <form class="form" action="/message" method="POST">
+            <H2>message</H2>
+            <div class="row">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">name</span>
+                <input type="text" class="form-control" required name="name1" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">message</span>
+                <input type="text" class="form-control" required name="message" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+
+              </div>
+              <button type="submit" class="btn btn-primary">send message</button>
+            </div>
+            <% for (let message of message_vws) { %>
+                <h2>message</h2>
+              <p>name: <%=message.name1%>
+              </p>
+              <p>message: "<%=message.message%>"</p>
+              
+
+              <% for (let comment of message.Comments) { %>
+                <h5>comment</h5>
+                <p>name: <%=comment.name2 %></p>
+                <p>comment: <%=comment.comment %></p>
+
+                <% } %>
+                <a href="/delete/<%=message.id %>">delete</a>
+              <% } %>
+          </form>
+        </div>
+        <div>
+          <div class="modal" tabindex="-1" id="formulario">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">comment</h5>
+                </div>
+                <div class="modal-body">
+                  <form class="form" action="/comment" method="POST">
+                      <div class="row">
+                      <input type="text" placeholder="name" required name="name2">
+                      <input type="text" placeholder="comment" required name="comment">
+                    </div>
+                    <select class="form-select" aria-label="Default select example" required name="MessageId">
+                      <option value>comments for message author</option>
+                      <% for (message of message_vws) { %>
+                        <option value="<%=message.id%>"><%=message.name1%> - (<%=message.message%>)</option>
+                      <% } %>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Send comment</button>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formulario">
+          add comments
+        </button>
+
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+</body>
+
+</html>
